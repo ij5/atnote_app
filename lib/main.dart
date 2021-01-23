@@ -1,7 +1,12 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:screen/screen.dart';
+import 'home.dart';
 
 void main() {
   runApp(App());
+  Screen.keepOn(true);
 }
 
 class App extends StatelessWidget{
@@ -14,16 +19,3 @@ class App extends StatelessWidget{
   }
 }
 
-class Home extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Center(
-          child: Text("hello World!"),
-        ),
-      ),
-    );
-  }
-
-}
