@@ -1,6 +1,35 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
+
+class _Image implements ZefyrImageDelegate<ImageSource>{
+  final picker = ImagePicker();
+
+  @override
+  Future<String> pickImage(ImageSource source) async{
+    final file = await picker.getImage(source: source);
+    if(file == null) return null;
+    return file.path;
+  }
+
+  @override
+  Widget buildImage(BuildContext context, String key) {
+    final file = File.fromUri(Uri.parse(key));
+    final image = FileImage(file);
+    return Image(image: image,);
+  }
+
+  @override
+  ImageSource get cameraSource => ImageSource.camera;
+
+  @override
+  // TODO: implement gallerySource
+  ImageSource get gallerySource => ImageSource.gallery;
+}
 
 class Editor extends StatefulWidget{
   @override
@@ -35,7 +64,7 @@ class _EditorState extends State<Editor> {
           IconButton(
             icon: Icon(Icons.save, color: Colors.black,),
             onPressed: (){
-
+              _saveDocument(context);
             },
           ),
         ],
@@ -45,6 +74,7 @@ class _EditorState extends State<Editor> {
           padding: EdgeInsets.all(15),
           controller: _controller,
           focusNode: _focusNode,
+          imageDelegate: _Image(),
         ),
       ),
     );
@@ -53,5 +83,10 @@ class _EditorState extends State<Editor> {
   NotusDocument _loadDocument(){
     final Delta delta = Delta()..insert("\n");
     return NotusDocument.fromDelta(delta);
+  }
+
+  void _saveDocument(BuildContext context){
+    final contents = jsonEncode(_controller.document);
+    print(contents);
   }
 }
