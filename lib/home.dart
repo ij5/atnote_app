@@ -1,3 +1,4 @@
+import 'package:atnote/editor.dart';
 import 'package:atnote/favorite.dart';
 import 'package:atnote/search.dart';
 import 'package:atnote/index.dart';
@@ -48,7 +49,9 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.add),
         tooltip: "NEW",
         backgroundColor: Colors.black,
-        onPressed: (){},
+        onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Editor()));
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BubbleBottomBar(
