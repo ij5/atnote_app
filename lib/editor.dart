@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+
 
 class _Image implements ZefyrImageDelegate<ImageSource>{
   final picker = ImagePicker();
@@ -36,7 +38,12 @@ class Editor extends StatefulWidget{
   _EditorState createState() => _EditorState();
 }
 
+
 class _EditorState extends State<Editor> {
+  final Future<Database> database = openDatabase(
+      join(await getDatabasesPath(), 'poems.db'),
+  );
+
   ZefyrController _controller;
   FocusNode _focusNode;
 
