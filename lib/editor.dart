@@ -9,6 +9,7 @@ import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:atnote/db.dart';
 
 void makeAlert(context, title, content, button, close) {
   showDialog(
@@ -38,57 +39,6 @@ void makeAlert(context, title, content, button, close) {
   );
 }
 
-class Poem{
-  final int id;
-  final String title;
-  final String date;
-  final String file;
-
-  Poem({this.id, this.title, this.date, this.file});
-
-  Map<String, dynamic> toMap(){
-    return {
-      'id': this.id,
-      'title': this.title,
-      'date': this.date,
-      'file': this.file
-    };
-  }
-}
-
-final Future<Database> database = openDatabase(
-  getDatabasesPath().toString()+"/poems.db",
-  onCreate: (db, version){
-    return db.execute("CREATE TABLE IF NOT EXISTS (id INTEGER PRIMARY KEY, title TEXT, [date] DATE)");
-  },
-  version: 1,
-);
-
-Future<void> insertPoems(Poem poem) async{
-  final Database db = await database;
-  await db.insert('poems', poem.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
-}
-
-Future<List<Poem>> getLastPoem() async{
-  final Database db = await database;
-  List<Map<String, dynamic>> last = await db.query("SELECT * FROM poems ORDER BY id DESC LIMIT 1");
-  return List.generate(last.length, (index){
-    return Poem(
-      id: last[index]['id'],
-      title: last[index]['title'],
-      date: last[index]['date'],
-      file: last[index]['file'],
-    );
-  });
-}
-
-Future<void> updatePoems(Poem poem)async{
-  final db = await database;
-  await db.update(
-    'poems', poem.toMap(),
-    where: "id=?",
-  );
-}
 
 class _Image implements ZefyrImageDelegate<ImageSource> {
   final picker = ImagePicker();
@@ -181,7 +131,7 @@ class _EditorState extends State<Editor> {
 
   Future<NotusDocument> _loadDocument() async {
     final directory = await getApplicationDocumentsDirectory();
-    final file = File(join(directory.path, 'file.json'));
+    final file = File(join(directory.path, 'poems','file.json'));
     if (await file.exists()) {
       final c = await file.readAsString();
       final contents = jsonDecode(c);
@@ -197,7 +147,7 @@ class _EditorState extends State<Editor> {
     final c = jsonDecode(contents);
     c.insert(0, {'title': c[0]['insert'].split('\n')[0]});
     final directory = await getApplicationDocumentsDirectory();
-    final file = File(join(directory.path, 'file.json'));
+    final file = File(join(directory.path, 'poems', 'file.json'));
     file.writeAsString(jsonEncode(c)).then((value) {
       makeAlert(context, "", "Saved.", "OK", true);
     });
