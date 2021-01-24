@@ -1,3 +1,4 @@
+import 'package:atnote/db.dart';
 import 'package:atnote/editor.dart';
 import 'package:atnote/favorite.dart';
 import 'package:atnote/search.dart';
@@ -25,6 +26,7 @@ class _HomeState extends State<Home> {
     super.initState();
     currentIndex = 0;
     _currentPage = Index();
+    initDB();
   }
 
   @override

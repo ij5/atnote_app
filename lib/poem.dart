@@ -11,9 +11,10 @@ class Poem{
   final String title;
   final String date;
   final String content;
+  final String file;
   final String heart;
 
-  Poem({this.id, this.title, this.date, this.content, this.heart});
+  Poem({this.id, this.title, this.date, this.content, this.file, this.heart});
 
   Map<String, dynamic> toMap(){
     return {
@@ -21,6 +22,7 @@ class Poem{
       'title': this.title,
       'date': this.date,
       'content': this.content,
+      'file': this.file,
       'heart': this.heart,
     };
   }

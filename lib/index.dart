@@ -19,12 +19,9 @@ class IndexState extends State<Index> {
       child: FutureBuilder(
         future: poem,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return ListView.builder(
+          return !snapshot.hasData?Center(
+            child: CircularProgressIndicator(),
+          ):ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int i) {
               return Container(

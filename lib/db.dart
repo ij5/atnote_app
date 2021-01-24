@@ -8,12 +8,11 @@ Database database;
 initDB() async{
   Directory documentsDirectory = await getApplicationDocumentsDirectory();
   String path = join(documentsDirectory.path, 'databases', 'poems.db');
-  print(path);
   database = await openDatabase(
       path,
       version: 1,
       onCreate: (db, version)async{
-        await db.execute("CREATE TABLE IF NOT EXISTS poems(id TEXT, title TEXT, [date] DATETIME, content TEXT, heart TEXT)");
+        await db.execute("CREATE TABLE IF NOT EXISTS poems(id TEXT, title TEXT, [date] DATETIME, content TEXT, file TEXT, heart TEXT)");
       }
   );
 }
@@ -36,7 +35,7 @@ updateDB(Poem poem) async{
   print(poem.toMap());
 }
 
-getPoems() async{
+Future getPoems() async{
   final db = await database;
   final List<Map<String, dynamic>> maps = await db.query('poems');
   var result = List.generate(maps.length, (i) {
@@ -45,6 +44,7 @@ getPoems() async{
       title: maps[i]['title'],
       date: maps[i]['date'],
       content: maps[i]['content'],
+
       heart: maps[i]['heart'],
     );
   });
