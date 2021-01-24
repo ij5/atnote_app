@@ -2,17 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
-import 'package:atnote/index.dart';
-import 'package:atnote/poem.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
 import 'package:path/path.dart';
-import 'package:atnote/db.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:math';
 
 void makeAlert(context, title, content, button, close) {
   showDialog(
@@ -41,6 +39,11 @@ void makeAlert(context, title, content, button, close) {
     },
   );
 }
+
+const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+Random _rnd = Random();
+String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+    length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
 
 class _Image implements ZefyrImageDelegate<ImageSource> {
@@ -150,18 +153,23 @@ class _EditorState extends State<Editor> {
     final c = jsonDecode(contents);
     c.insert(0, {'title': c[0]['insert'].split('\n')[0]});
     print(DateTime.now());
-    var p = Poem(
-      title: c[1]['insert'].split('\n')[0],
-      date: DateTime.now().toString(),
-      content: contents,
-      heart: "false"
-    );
 
-    makeAlert(context, "", "Saved.", "OK", true);
-    // final directory = await getApplicationDocumentsDirectory();
-    // final file = File(join(directory.path, 'poems', 'file.json'));
-    // file.writeAsString(jsonEncode(c)).then((value) {
-    //   makeAlert(context, "", "Saved.", "OK", true);
-    // });
+    Directory directory = await getApplicationDocumentsDirectory();
+    final poemsDir = join(directory.path, 'poems');
+    if(Directory(poemsDir).existsSync()){
+      Directory(poemsDir).createSync();
+    }
+    final path = join(poemsDir, getRandomString(10)+".json");
+    final file = File(path);
+    file.writeAsString(jsonEncode(c)).then((value) {
+      makeAlert(context, "", "Saved.", "OK", true);
+    });
+
+    var poems = await Hive.openBox('poems');
+    if(poems.get('file')==null){
+      poems.put('file', []);
+    }
+    poems.put('file', poems.get('file').insert(0, path));
+
   }
 }
