@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:atnote/db.dart';
@@ -16,12 +17,16 @@ class IndexState extends State<Index> {
   var poems;
   void initState() {
     super.initState();
-    poems = Hive.openBox('poems');
+    initPoem();
   }
 
   @override
   void didChangeDependencies(){
     super.didChangeDependencies();
+  }
+
+  initPoem()async{
+    poems = await Hive.openBox('poems');
   }
 
 
@@ -32,8 +37,8 @@ class IndexState extends State<Index> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         itemCount: poems==null?0:poems.get('file').length,
         itemBuilder: (BuildContext context, int i){
-          var file = jsonDecode(poems.get('file')[i]);
-          print(file);
+          var file = File(poems.get('file')[i]);
+          print(file.readAsStringSync());
           return Container(
             margin: EdgeInsets.fromLTRB(20, 15, 20, 15),
             padding: EdgeInsets.all(30),
@@ -49,7 +54,7 @@ class IndexState extends State<Index> {
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             child: Center(
-              child: Text(file),
+              child: Text(file.readAsStringSync()),
             ),
           );
         },
