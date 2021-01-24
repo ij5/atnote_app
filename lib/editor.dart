@@ -1,20 +1,102 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:core';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+void makeAlert(context, title, content, button, close) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        title: Text(title),
+        content: Text(content),
+        actions: <Widget>[
+          new FlatButton(
+            child: Text(button),
+            onPressed: () {
+              if (close) {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              } else {
+                Navigator.pop(context);
+              }
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 
-class _Image implements ZefyrImageDelegate<ImageSource>{
+class Poem{
+  final int id;
+  final String title;
+  final String date;
+  final String file;
+
+  Poem({this.id, this.title, this.date, this.file});
+
+  Map<String, dynamic> toMap(){
+    return {
+      'id': this.id,
+      'title': this.title,
+      'date': this.date,
+      'file': this.file
+    };
+  }
+}
+
+final Future<Database> database = openDatabase(
+  getDatabasesPath().toString()+"/poems.db",
+  onCreate: (db, version){
+    return db.execute("CREATE TABLE IF NOT EXISTS (id INTEGER PRIMARY KEY, title TEXT, [date] DATE)");
+  },
+  version: 1,
+);
+
+Future<void> insertPoems(Poem poem) async{
+  final Database db = await database;
+  await db.insert('poems', poem.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+}
+
+Future<List<Poem>> getLastPoem() async{
+  final Database db = await database;
+  List<Map<String, dynamic>> last = await db.query("SELECT * FROM poems ORDER BY id DESC LIMIT 1");
+  return List.generate(last.length, (index){
+    return Poem(
+      id: last[index]['id'],
+      title: last[index]['title'],
+      date: last[index]['date'],
+      file: last[index]['file'],
+    );
+  });
+}
+
+Future<void> updatePoems(Poem poem)async{
+  final db = await database;
+  await db.update(
+    'poems', poem.toMap(),
+    where: "id=?",
+  );
+}
+
+class _Image implements ZefyrImageDelegate<ImageSource> {
   final picker = ImagePicker();
 
   @override
-  Future<String> pickImage(ImageSource source) async{
+  Future<String> pickImage(ImageSource source) async {
     final file = await picker.getImage(source: source);
-    if(file == null) return null;
+    if (file == null) return null;
     return file.path;
   }
 
@@ -22,7 +104,9 @@ class _Image implements ZefyrImageDelegate<ImageSource>{
   Widget buildImage(BuildContext context, String key) {
     final file = File.fromUri(Uri.parse(key));
     final image = FileImage(file);
-    return Image(image: image,);
+    return Image(
+      image: image,
+    );
   }
 
   @override
@@ -33,21 +117,21 @@ class _Image implements ZefyrImageDelegate<ImageSource>{
   ImageSource get gallerySource => ImageSource.gallery;
 }
 
-class Editor extends StatefulWidget{
+class Editor extends StatefulWidget {
   @override
   _EditorState createState() => _EditorState();
 }
 
-
 class _EditorState extends State<Editor> {
+
 
   ZefyrController _controller;
   FocusNode _focusNode;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _loadDocument().then((document){
+    _loadDocument().then((document) {
       setState(() {
         _controller = ZefyrController(document);
       });
@@ -59,50 +143,64 @@ class _EditorState extends State<Editor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit", style: TextStyle(color: Colors.black),),
+        title: Text(
+          "Edit",
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(
           color: Colors.black,
         ),
-        actionsIconTheme: IconThemeData(
-          color: Colors.black
-        ),
+        actionsIconTheme: IconThemeData(color: Colors.black),
         actions: [
           IconButton(
-            icon: Icon(Icons.save, color: Colors.black,),
-            onPressed: (){
+            icon: Icon(
+              Icons.save,
+              color: Colors.black,
+            ),
+            onPressed: () {
               _saveDocument(context);
             },
           ),
         ],
       ),
-      body: _controller==null?Center(child: CircularProgressIndicator(),):ZefyrScaffold(
-        child: ZefyrEditor(
-          padding: EdgeInsets.all(15),
-          controller: _controller,
-          focusNode: _focusNode,
-          imageDelegate: _Image(),
-        ),
-      ),
+      body: _controller == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ZefyrScaffold(
+              child: ZefyrEditor(
+                padding: EdgeInsets.all(15),
+                controller: _controller,
+                focusNode: _focusNode,
+                imageDelegate: _Image(),
+              ),
+            ),
     );
   }
 
-  Future<NotusDocument> _loadDocument() async{
-    final file = File(join(, 'file.json'));
-    print(join(, 'file.json'));
-    if(await file.exists()){
-      final contents = await file.readAsString();
-      return NotusDocument.fromJson(jsonDecode(contents));
+  Future<NotusDocument> _loadDocument() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File(join(directory.path, 'file.json'));
+    if (await file.exists()) {
+      final c = await file.readAsString();
+      final contents = jsonDecode(c);
+      contents.removeAt(0);
+      return NotusDocument.fromJson(contents);
     }
     final Delta delta = Delta()..insert("\n");
     return NotusDocument.fromDelta(delta);
   }
 
-  void _saveDocument(BuildContext context){
+  Future<void> _saveDocument(BuildContext context) async {
     final contents = jsonEncode(_controller.document);
-    final file = File(join(Directory.systemTemp.path, 'file.json'));
-    file.writeAsString(contents).then((value){
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Saved.")));
+    final c = jsonDecode(contents);
+    c.insert(0, {'title': c[0]['insert'].split('\n')[0]});
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File(join(directory.path, 'file.json'));
+    file.writeAsString(jsonEncode(c)).then((value) {
+      makeAlert(context, "", "Saved.", "OK", true);
     });
+    getDatabasesPath().then((value) => print(value));
   }
 }
