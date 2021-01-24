@@ -2,26 +2,7 @@ import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-
-class Poem{
-  final int id;
-  final String title;
-  final String date;
-  final String file;
-  final String heart;
-
-  Poem({this.id, this.title, this.date, this.file, this.heart});
-
-  Map<String, dynamic> toMap(){
-    return {
-      'id': this.id,
-      'title': this.title,
-      'date': this.date,
-      'file': this.file,
-      'heart': this.heart,
-    };
-  }
-}
+import 'package:atnote/poem.dart';
 
 Database database;
 initDB() async{
@@ -31,9 +12,16 @@ initDB() async{
       path,
       version: 1,
       onCreate: (db, version)async{
-        await db.execute("CREATE TABLE IF NOT EXISTS poems(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, [date] DATETIME, file TEXT, heart TEXT)");
+        await db.execute("CREATE TABLE IF NOT EXISTS poems(id TEXT, title TEXT, [date] DATETIME, content TEXT, heart TEXT)");
       }
   );
+}
+
+deleteDB() async{
+  final db = await database;
+  Directory documentsDirectory = await getApplicationDocumentsDirectory();
+  String path = join(documentsDirectory.path, 'databases', 'poems.db');
+  deleteDatabase(path);
 }
 
 insertDB(Poem poem) async{
@@ -45,4 +33,20 @@ insertDB(Poem poem) async{
 updateDB(Poem poem) async{
   final db = await database;
   print(poem.toMap());
+}
+
+getPoems() async{
+  final db = await database;
+  final List<Map<String, dynamic>> maps = await db.query('poems');
+  var result = List.generate(maps.length, (i) {
+    return Poem(
+      id: maps[i]['id'],
+      title: maps[i]['title'],
+      date: maps[i]['date'],
+      content: maps[i]['content'],
+      heart: maps[i]['heart'],
+    );
+  });
+  print(result);
+  return result;
 }

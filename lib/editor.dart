@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
+import 'package:atnote/poem.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -146,11 +147,18 @@ class _EditorState extends State<Editor> {
     final contents = jsonEncode(_controller.document);
     final c = jsonDecode(contents);
     c.insert(0, {'title': c[0]['insert'].split('\n')[0]});
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File(join(directory.path, 'poems', 'file.json'));
-    file.writeAsString(jsonEncode(c)).then((value) {
-      makeAlert(context, "", "Saved.", "OK", true);
-    });
-    getDatabasesPath().then((value) => print(value));
+    print(DateTime.now());
+    var p = Poem(
+      title: c[1]['insert'].split('\n')[0],
+      date: DateTime.now().toString(),
+      content: contents,
+      heart: "false"
+    );
+    insertDB(p);
+    // final directory = await getApplicationDocumentsDirectory();
+    // final file = File(join(directory.path, 'poems', 'file.json'));
+    // file.writeAsString(jsonEncode(c)).then((value) {
+    //   makeAlert(context, "", "Saved.", "OK", true);
+    // });
   }
 }
