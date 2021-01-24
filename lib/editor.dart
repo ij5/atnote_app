@@ -40,9 +40,6 @@ class Editor extends StatefulWidget{
 
 
 class _EditorState extends State<Editor> {
-  final Future<Database> database = openDatabase(
-      join(await getDatabasesPath(), 'poems.db'),
-  );
 
   ZefyrController _controller;
   FocusNode _focusNode;
@@ -50,8 +47,11 @@ class _EditorState extends State<Editor> {
   @override
   void initState(){
     super.initState();
-    final document = _loadDocument();
-    _controller = ZefyrController(document);
+    _loadDocument().then((document){
+      setState(() {
+        _controller = ZefyrController(document);
+      });
+    });
     _focusNode = FocusNode();
   }
 
@@ -76,7 +76,7 @@ class _EditorState extends State<Editor> {
           ),
         ],
       ),
-      body: ZefyrScaffold(
+      body: _controller==null?Center(child: CircularProgressIndicator(),):ZefyrScaffold(
         child: ZefyrEditor(
           padding: EdgeInsets.all(15),
           controller: _controller,
@@ -87,13 +87,22 @@ class _EditorState extends State<Editor> {
     );
   }
 
-  NotusDocument _loadDocument(){
+  Future<NotusDocument> _loadDocument() async{
+    final file = File(join(, 'file.json'));
+    print(join(, 'file.json'));
+    if(await file.exists()){
+      final contents = await file.readAsString();
+      return NotusDocument.fromJson(jsonDecode(contents));
+    }
     final Delta delta = Delta()..insert("\n");
     return NotusDocument.fromDelta(delta);
   }
 
   void _saveDocument(BuildContext context){
     final contents = jsonEncode(_controller.document);
-    print(contents);
+    final file = File(join(Directory.systemTemp.path, 'file.json'));
+    file.writeAsString(contents).then((value){
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Saved.")));
+    });
   }
 }
