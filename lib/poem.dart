@@ -1,28 +1,23 @@
-import 'dart:math';
+import 'package:hive/hive.dart';
 
-const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-Random _rnd = Random();
-String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-    length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+@HiveType(typeId: 0)
+class Poem extends HiveObject{
+  @HiveField(0)
+  String title;
+  @HiveField(1)
+  String date;
+  @HiveField(2)
+  String content;
+  @HiveField(3)
+  String heart;
 
-
-class Poem{
-  final String id;
-  final String title;
-  final String date;
-  final String content;
-  final String file;
-  final String heart;
-
-  Poem({this.id, this.title, this.date, this.content, this.file, this.heart});
+  Poem({this.title, this.date, this.content, this.heart});
 
   Map<String, dynamic> toMap(){
     return {
-      'id': getRandomString(30),
       'title': this.title,
       'date': this.date,
       'content': this.content,
-      'file': this.file,
       'heart': this.heart,
     };
   }

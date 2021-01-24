@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:screen/screen.dart';
+import 'db.dart';
 import 'home.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() async{
+  await Hive.initFlutter();
+  await Hive.openBox('poems');
   runApp(App());
   Screen.keepOn(true);
 }
 
 class App extends StatelessWidget{
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

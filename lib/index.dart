@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:atnote/db.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+
 
 class Index extends StatefulWidget {
   @override
@@ -12,8 +12,13 @@ class IndexState extends State<Index> {
   var poem;
   void initState() {
     super.initState();
-    poem = getPoems();
   }
+
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+  }
+
 
   @override
   Widget build(BuildContext context) {

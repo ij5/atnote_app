@@ -9,9 +9,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:atnote/db.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void makeAlert(context, title, content, button, close) {
   showDialog(
@@ -155,7 +156,7 @@ class _EditorState extends State<Editor> {
       content: contents,
       heart: "false"
     );
-    insertDB(p);
+
     makeAlert(context, "", "Saved.", "OK", true);
     // final directory = await getApplicationDocumentsDirectory();
     // final file = File(join(directory.path, 'poems', 'file.json'));

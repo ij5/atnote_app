@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget{
   @override
-  _HomeState createState() => _HomeState();
+  _HomeState createState() {
+    return _HomeState();
+  }
 }
 
 class _HomeState extends State<Home> {
-
-
   int currentIndex;
   List _page = <Widget>[
     Index(),
@@ -28,7 +28,6 @@ class _HomeState extends State<Home> {
     super.initState();
     currentIndex = 0;
     _currentPage = Index();
-    initDB();
   }
 
   @override
