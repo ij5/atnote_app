@@ -7,7 +7,7 @@ String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
 
 
 class Poem{
-  final int id;
+  final String id;
   final String title;
   final String date;
   final String content;

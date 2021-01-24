@@ -155,6 +155,7 @@ class _EditorState extends State<Editor> {
       heart: "false"
     );
     insertDB(p);
+    makeAlert(context, "", "Saved.", "OK", true);
     // final directory = await getApplicationDocumentsDirectory();
     // final file = File(join(directory.path, 'poems', 'file.json'));
     // file.writeAsString(jsonEncode(c)).then((value) {

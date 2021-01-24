@@ -47,6 +47,5 @@ getPoems() async{
       heart: maps[i]['heart'],
     );
   });
-  print(result);
   return result;
 }
