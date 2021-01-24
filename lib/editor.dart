@@ -156,7 +156,7 @@ class _EditorState extends State<Editor> {
 
     Directory directory = await getApplicationDocumentsDirectory();
     final poemsDir = join(directory.path, 'poems');
-    if(Directory(poemsDir).existsSync()){
+    if(!Directory(poemsDir).existsSync()){
       Directory(poemsDir).createSync();
     }
     final path = join(poemsDir, getRandomString(10)+".json");
@@ -169,7 +169,8 @@ class _EditorState extends State<Editor> {
     if(poems.get('file')==null){
       poems.put('file', []);
     }
-    poems.put('file', poems.get('file').insert(0, path));
-
+    final input = poems.get('file');
+    input.insert(0, path);
+    poems.put('file', input);
   }
 }

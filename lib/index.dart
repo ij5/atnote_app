@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:atnote/db.dart';
+import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
 
 
 class Index extends StatefulWidget {
@@ -11,9 +13,10 @@ class Index extends StatefulWidget {
 }
 
 class IndexState extends State<Index> {
-  var poem;
+  var poems;
   void initState() {
     super.initState();
+    poems = Hive.openBox('poems');
   }
 
   @override
@@ -25,9 +28,12 @@ class IndexState extends State<Index> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ValueListenableBuilder(
-        valueListenable: Hive.box('poems').listenable(),
-        builder: (context, box, widget){
+      child: ListView.builder(
+        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        itemCount: poems==null?0:poems.get('file').length,
+        itemBuilder: (BuildContext context, int i){
+          var file = jsonDecode(poems.get('file')[i]);
+          print(file);
           return Container(
             margin: EdgeInsets.fromLTRB(20, 15, 20, 15),
             padding: EdgeInsets.all(30),
@@ -43,7 +49,7 @@ class IndexState extends State<Index> {
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             child: Center(
-              child: Text(""),
+              child: Text(file),
             ),
           );
         },
