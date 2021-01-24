@@ -3,15 +3,14 @@ import 'package:atnote/db.dart';
 
 class Index extends StatefulWidget {
   @override
-  _IndexState createState() => _IndexState();
+  IndexState createState() => IndexState();
 }
 
-class _IndexState extends State<Index> {
+class IndexState extends State<Index> {
   var poem;
   void initState() {
     super.initState();
     poem = getPoems();
-    print(poem);
   }
 
   @override
@@ -35,8 +34,8 @@ class _IndexState extends State<Index> {
                   color: Colors.white,
                   border: Border.all(color: Color(0xffd6d6d6), width: 0),
                   boxShadow: [BoxShadow(
-                    color: Colors.blue[100],
-                    offset: Offset(0, 8),
+                    color: Colors.black12,
+                    offset: Offset(7, 7),
                     blurRadius: 10,
                     spreadRadius: 0
                   ),],

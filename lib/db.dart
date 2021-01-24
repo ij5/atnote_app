@@ -8,6 +8,7 @@ Database database;
 initDB() async{
   Directory documentsDirectory = await getApplicationDocumentsDirectory();
   String path = join(documentsDirectory.path, 'databases', 'poems.db');
+  print(path);
   database = await openDatabase(
       path,
       version: 1,
