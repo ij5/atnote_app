@@ -158,22 +158,21 @@ class _EditorState extends State<Editor> {
 
   Future<void> _saveDocument(BuildContext context) async {
     final contents = jsonEncode(_controller.document);
-    final c = jsonDecode(contents);
-    c.insert(0, {'title': c[0]['insert'].split('\n')[0], 'trash': 'false', 'heart': 'false'});
-    print(DateTime.now());
 
-    Directory directory = await getApplicationDocumentsDirectory();
-    final poemsDir = join(directory.path, 'poems');
-    if(!Directory(poemsDir).existsSync()){
-      Directory(poemsDir).createSync();
-    }
-    final path = join(poemsDir, getRandomString(10)+".json");
-    File file;
     if(Get.arguments==null){
+      final c = jsonDecode(contents);
+      c.insert(0, {'title': c[0]['insert'].split('\n')[0], 'trash': 'false', 'heart': 'false'});
+
+      Directory directory = await getApplicationDocumentsDirectory();
+      final poemsDir = join(directory.path, 'poems');
+      if(!Directory(poemsDir).existsSync()){
+        Directory(poemsDir).createSync();
+      }
+      final path = join(poemsDir, getRandomString(10)+".json");
+      File file;
+
       file = File(path);
-      file.writeAsString(jsonEncode(c)).then((value) {
-        makeAlert(context, "", "Saved.", "OK", true);
-      });
+      file.writeAsString(jsonEncode(c));
 
       var poems = await Hive.openBox('poems');
       if(poems.get('file')==null){
@@ -183,10 +182,26 @@ class _EditorState extends State<Editor> {
       print(input);
       input.insert(0, path);
       poems.put('file', input);
+      Get.off(View(), arguments: [c, file]);
     }else{
+      final c = jsonDecode(contents);
+      c.insert(0, {
+        'title': c[0]['insert'].split('\n')[0],
+        'trash': jsonDecode(Get.arguments[0])[0]['trash'],
+        'heart': jsonDecode(Get.arguments[0])[0]['heart']
+      });
+
+      Directory directory = await getApplicationDocumentsDirectory();
+      final poemsDir = join(directory.path, 'poems');
+      if(!Directory(poemsDir).existsSync()){
+        Directory(poemsDir).createSync();
+      }
+      final path = join(poemsDir, getRandomString(10)+".json");
+      File file;
+
       file = Get.arguments[1];
       file.writeAsString(jsonEncode(c)).then((value) {
-        Get.off(View(), arguments: [contents, file]);
+        Get.off(View(), arguments: [c, file]);
       });
     }
   }
