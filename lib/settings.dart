@@ -17,7 +17,6 @@ class Settings extends StatelessWidget{
     initPoem();
     return WillPopScope(
       onWillPop: (){
-        print("Will popped");
         Get.off(Home());
         return Future(()=>false);
       },

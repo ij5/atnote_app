@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:atnote/view.dart';
+import 'package:get/get.dart';
 
 class Favorite extends StatefulWidget{
   @override
@@ -50,7 +51,7 @@ class _FavoriteState extends State<Favorite> {
                 },
                 child: GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>View()));
+                    Get.off(View(), arguments: [jsonEncode(content), file]);
                   },
                   child: Stack(
                     children: [

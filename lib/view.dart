@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:atnote/editor.dart';
+import 'package:atnote/home.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
@@ -63,25 +64,31 @@ class _ViewState extends State<View> {
   Widget build(BuildContext context) {
     final document = NotusDocument.fromDelta(getDelta(Get.arguments[0]));
     final file = Get.arguments[1];
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(jsonDecode(Get.arguments[0])[0]['title']),
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: (){
-              Get.off(Editor(), arguments: [document,  file]);
-            },
+    return WillPopScope(
+      onWillPop: (){
+        Get.off(Home());
+        return Future(()=>false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(jsonDecode(Get.arguments[0])[0]['title']),
+          iconTheme: IconThemeData(color: Colors.black),
+          backgroundColor: Colors.white,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: (){
+                Get.off(Editor(), arguments: [document,  file]);
+              },
+            ),
+          ],
+        ),
+        body: Container(
+          padding: EdgeInsets.all(15),
+          child: ZefyrView(
+            document: document,
+            imageDelegate: CustomImageDelegate(),
           ),
-        ],
-      ),
-      body: Container(
-        padding: EdgeInsets.all(15),
-        child: ZefyrView(
-          document: document,
-          imageDelegate: CustomImageDelegate(),
         ),
       ),
     );

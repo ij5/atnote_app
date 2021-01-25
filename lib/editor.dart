@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
+import 'package:atnote/home.dart';
 import 'package:atnote/index.dart';
+import 'package:atnote/view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -90,48 +92,54 @@ class _EditorState extends State<Editor> {
   void initState() {
     super.initState();
     setState(() {
-      _controller = ZefyrController(Get.arguments[0]==null?null:Get.arguments[0]);
+      _controller = ZefyrController(Get.arguments==null?NotusDocument():Get.arguments[0]);
     });
     _focusNode = FocusNode();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Edit",
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
-        actionsIconTheme: IconThemeData(color: Colors.black),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.save,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              _saveDocument(context);
-            },
+    return WillPopScope(
+      onWillPop: (){
+        Get.off(Home());
+        return Future(()=>false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Edit",
+            style: TextStyle(color: Colors.black),
           ),
-        ],
-      ),
-      body: _controller == null
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ZefyrScaffold(
-              child: ZefyrEditor(
-                padding: EdgeInsets.all(15),
-                controller: _controller,
-                focusNode: _focusNode,
-                imageDelegate: _Image(),
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(
+            color: Colors.black,
+          ),
+          actionsIconTheme: IconThemeData(color: Colors.black),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.save,
+                color: Colors.black,
               ),
+              onPressed: () {
+                _saveDocument(context);
+              },
             ),
+          ],
+        ),
+        body: _controller == null
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : ZefyrScaffold(
+                child: ZefyrEditor(
+                  padding: EdgeInsets.all(15),
+                  controller: _controller,
+                  focusNode: _focusNode,
+                  imageDelegate: _Image(),
+                ),
+              ),
+      ),
     );
   }
 
@@ -161,7 +169,7 @@ class _EditorState extends State<Editor> {
     }
     final path = join(poemsDir, getRandomString(10)+".json");
     File file;
-    if(Get.arguments[1]==null){
+    if(Get.arguments==null){
       file = File(path);
       file.writeAsString(jsonEncode(c)).then((value) {
         makeAlert(context, "", "Saved.", "OK", true);
@@ -176,9 +184,9 @@ class _EditorState extends State<Editor> {
       input.insert(0, path);
       poems.put('file', input);
     }else{
-      file = Get.arguments['file'];
+      file = Get.arguments[1];
       file.writeAsString(jsonEncode(c)).then((value) {
-        makeAlert(context, "", "Saved.", "OK", true);
+        Get.off(View(), arguments: [contents, file]);
       });
     }
   }

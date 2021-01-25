@@ -26,7 +26,6 @@ class _TrashState extends State<Trash> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: (){
-        print("Will popped");
         Get.off(Home());
         return Future(()=>false);
       },
