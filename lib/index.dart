@@ -47,9 +47,10 @@ class IndexState extends State<Index> {
             itemCount: snapshot.data.get('file').length,
             itemBuilder: (BuildContext context, int i){
               var file = File(snapshot.data.get('file')[i]);
-              var content = file.readAsStringSync();
-              content = jsonDecode(content);
-              
+              var content = jsonDecode(file.readAsStringSync());
+              if(content[0]['trash']=="true"){
+                return null;
+              }
               return Dismissible(
                 key: Key(snapshot.data.get('file')[i].toString()),
                 onDismissed: (direction){
@@ -73,7 +74,7 @@ class IndexState extends State<Index> {
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
                   child: Center(
-                    child: Text(file.readAsStringSync()),
+                    child: Text(content[0]['title']),
                   ),
                 ),
               );
