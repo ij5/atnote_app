@@ -49,7 +49,8 @@ Delta getDelta(data) {
 
 class View extends StatefulWidget{
   final doc;
-  View({Key key, @required this.doc}) : super(key: key);
+  final File file;
+  View({Key key, @required this.doc, @required this.file}) : super(key: key);
 
   @override
   _ViewState createState() => _ViewState();
@@ -64,8 +65,8 @@ class _ViewState extends State<View> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.doc);
     final document = NotusDocument.fromDelta(getDelta(widget.doc));
+    final file = widget.file;
     return Scaffold(
       appBar: AppBar(
         title: Text(jsonDecode(widget.doc)[0]['title']),
@@ -75,7 +76,7 @@ class _ViewState extends State<View> {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: (){
-              Get.off(Editor(), arguments: document);
+              Get.off(Editor(), arguments: {'document': document, 'file': file});
             },
           ),
         ],
