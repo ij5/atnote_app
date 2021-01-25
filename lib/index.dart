@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:atnote/view.dart';
 import 'package:flutter/material.dart';
 import 'package:atnote/db.dart';
@@ -45,7 +44,7 @@ class IndexState extends State<Index> {
           }
           return ListView.builder(
             padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            itemCount: snapshot.data.get('file').length,
+            itemCount: snapshot.data.get('file')==null?0:snapshot.data.get('file').length,
             itemBuilder: (BuildContext context, int i){
               var file = File(snapshot.data.get('file')[i]);
               var content = jsonDecode(file.readAsStringSync());
@@ -53,7 +52,7 @@ class IndexState extends State<Index> {
                 return SizedBox.shrink();
               }
               return Dismissible(
-                key: Key(snapshot.data.get('file')[i].toString()),
+                key: UniqueKey(),
                 onDismissed: (direction){
                   content[0]['trash'] = "true";
                   file.writeAsString(jsonEncode(content));
