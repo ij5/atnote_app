@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:atnote/poem.dart';
+import 'package:zefyr/zefyr.dart';
 
 
 class View extends StatefulWidget{
   Map poem;
-  View({Key key, Map poem}):super(key: key);
 
   @override
   _ViewState createState() => _ViewState();
@@ -15,7 +15,12 @@ class _ViewState extends State<View> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.poem['title']),
+        title: Text(""),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+      ),
+      body: Container(
+        child: Text("Hello"),
       ),
     );
   }

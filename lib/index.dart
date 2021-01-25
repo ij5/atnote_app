@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:atnote/view.dart';
 import 'package:flutter/material.dart';
 import 'package:atnote/db.dart';
 import 'package:provider/provider.dart';
@@ -59,22 +60,27 @@ class IndexState extends State<Index> {
                   });
                   Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("Moved to trash.")));
                 },
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                  padding: EdgeInsets.all(30),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Color(0xffd6d6d6), width: 0),
-                    boxShadow: [BoxShadow(
-                        color: Colors.black12,
-                        offset: Offset(7, 7),
-                        blurRadius: 10,
-                        spreadRadius: 0
-                    ),],
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
-                  child: Center(
-                    child: Text(content[0]['title']),
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>View()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                    padding: EdgeInsets.all(30),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Color(0xffd6d6d6), width: 0),
+                      boxShadow: [BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(7, 7),
+                          blurRadius: 10,
+                          spreadRadius: 0
+                      ),],
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                    child: Center(
+                      child: Text(content[0]['title']),
+                    ),
                   ),
                 ),
               );
