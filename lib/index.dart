@@ -15,9 +15,10 @@ class Index extends StatefulWidget {
 
 class IndexState extends State<Index> {
   var poems;
+
+  @override
   void initState() {
     super.initState();
-    initPoem();
   }
 
   @override
@@ -26,36 +27,57 @@ class IndexState extends State<Index> {
   }
 
   initPoem()async{
-    poems = await Hive.openBox('poems');
+    return await Hive.openBox('poems');
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView.builder(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-        itemCount: poems==null?0:poems.get('file').length,
-        itemBuilder: (BuildContext context, int i){
-          var file = File(poems.get('file')[i]);
-          print(file.readAsStringSync());
-          return Container(
-            margin: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            padding: EdgeInsets.all(30),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Color(0xffd6d6d6), width: 0),
-              boxShadow: [BoxShadow(
-                  color: Colors.black12,
-                  offset: Offset(7, 7),
-                  blurRadius: 10,
-                  spreadRadius: 0
-              ),],
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
-            child: Center(
-              child: Text(file.readAsStringSync()),
-            ),
+      child: FutureBuilder(
+        future: poems==null?initPoem():poems,
+        builder: (BuildContext context, AsyncSnapshot snapshot){
+          if(!snapshot.hasData){
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+            itemCount: snapshot.data.get('file').length,
+            itemBuilder: (BuildContext context, int i){
+              var file = File(snapshot.data.get('file')[i]);
+              var content = file.readAsStringSync();
+              content = jsonDecode(content);
+              
+              return Dismissible(
+                key: Key(snapshot.data.get('file')[i].toString()),
+                onDismissed: (direction){
+                  setState(() {
+                    snapshot.data.get('file').removeAt(i);
+                  });
+                  Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("Moved to trash.")));
+                },
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                  padding: EdgeInsets.all(30),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Color(0xffd6d6d6), width: 0),
+                    boxShadow: [BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(7, 7),
+                        blurRadius: 10,
+                        spreadRadius: 0
+                    ),],
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                  child: Center(
+                    child: Text(file.readAsStringSync()),
+                  ),
+                ),
+              );
+            },
           );
         },
       ),

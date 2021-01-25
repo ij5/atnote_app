@@ -16,6 +16,7 @@ class Home extends StatefulWidget{
 
 class _HomeState extends State<Home> {
   int currentIndex;
+  Widget indexPage;
   List _page = <Widget>[
     Index(),
     Search(),
@@ -53,7 +54,11 @@ class _HomeState extends State<Home> {
         tooltip: "NEW",
         backgroundColor: Colors.black,
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>Editor()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Editor())).then((value){
+            setState(() {
+              _currentPage = Index();
+            });
+          });
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
