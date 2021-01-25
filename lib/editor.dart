@@ -171,6 +171,7 @@ class _EditorState extends State<Editor> {
       poems.put('file', []);
     }
     final input = poems.get('file');
+    print(input);
     input.insert(0, path);
     poems.put('file', input);
   }
