@@ -152,7 +152,7 @@ class _EditorState extends State<Editor> {
   Future<void> _saveDocument(BuildContext context) async {
     final contents = jsonEncode(_controller.document);
     final c = jsonDecode(contents);
-    c.insert(0, {'title': c[0]['insert'].split('\n')[0]});
+    c.insert(0, {'title': c[0]['insert'].split('\n')[0], 'trash': 'false'});
     print(DateTime.now());
 
     Directory directory = await getApplicationDocumentsDirectory();
