@@ -9,5 +9,5 @@ class Messages extends Translations{
     'ko_KR': {
       'title': '@노트'
     }
-  }
+  };
 }

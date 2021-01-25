@@ -6,6 +6,7 @@ import 'db.dart';
 import 'home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:get/get.dart';
+import 'package:atnote/translate.dart';
 
 void main() async{
   await Hive.initFlutter();
@@ -18,8 +19,10 @@ class App extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      translations: Messages(),
       title: "@note",
       home: Home(),
+      locale: Get.deviceLocale,
     );
   }
 }

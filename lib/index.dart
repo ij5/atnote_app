@@ -61,7 +61,7 @@ class IndexState extends State<Index> {
                 },
                 child: GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>View()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>View(doc: jsonEncode(content))));
                   },
                   child: Stack(
                     children: [

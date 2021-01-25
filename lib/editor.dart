@@ -4,6 +4,7 @@ import 'dart:core';
 import 'dart:io';
 import 'package:atnote/index.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quill_delta/quill_delta.dart';
@@ -88,10 +89,8 @@ class _EditorState extends State<Editor> {
   @override
   void initState() {
     super.initState();
-    _loadDocument().then((document) {
-      setState(() {
-        _controller = ZefyrController(document);
-      });
+    setState(() {
+      _controller = ZefyrController(Get.arguments==null?null:Get.arguments);
     });
     _focusNode = FocusNode();
   }
