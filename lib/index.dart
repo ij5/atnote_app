@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:atnote/view.dart';
 import 'package:flutter/material.dart';
 import 'package:atnote/db.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -61,7 +62,7 @@ class IndexState extends State<Index> {
                 },
                 child: GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>View(doc: jsonEncode(content))));
+                    Get.off(View(), arguments: [jsonEncode(content), file]);
                   },
                   child: Stack(
                     children: [

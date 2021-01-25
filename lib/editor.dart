@@ -90,7 +90,7 @@ class _EditorState extends State<Editor> {
   void initState() {
     super.initState();
     setState(() {
-      _controller = ZefyrController(Get.arguments==null?null:Get.arguments);
+      _controller = ZefyrController(Get.arguments[0]==null?null:Get.arguments[0]);
     });
     _focusNode = FocusNode();
   }
@@ -160,18 +160,26 @@ class _EditorState extends State<Editor> {
       Directory(poemsDir).createSync();
     }
     final path = join(poemsDir, getRandomString(10)+".json");
-    final file = File(path);
-    file.writeAsString(jsonEncode(c)).then((value) {
-      makeAlert(context, "", "Saved.", "OK", true);
-    });
+    File file;
+    if(Get.arguments[1]==null){
+      file = File(path);
+      file.writeAsString(jsonEncode(c)).then((value) {
+        makeAlert(context, "", "Saved.", "OK", true);
+      });
 
-    var poems = await Hive.openBox('poems');
-    if(poems.get('file')==null){
-      poems.put('file', []);
+      var poems = await Hive.openBox('poems');
+      if(poems.get('file')==null){
+        poems.put('file', []);
+      }
+      final input = poems.get('file');
+      print(input);
+      input.insert(0, path);
+      poems.put('file', input);
+    }else{
+      file = Get.arguments['file'];
+      file.writeAsString(jsonEncode(c)).then((value) {
+        makeAlert(context, "", "Saved.", "OK", true);
+      });
     }
-    final input = poems.get('file');
-    print(input);
-    input.insert(0, path);
-    poems.put('file', input);
   }
 }
