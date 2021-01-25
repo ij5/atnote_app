@@ -1,4 +1,7 @@
+import 'package:atnote/home.dart';
+import 'package:atnote/index.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 class Settings extends StatelessWidget{
@@ -12,20 +15,33 @@ class Settings extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     initPoem();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Settings"),
-      ),
-      body: Container(
-        child: Column(
-          children: [
-            FlatButton(
-              child: Text("RESET"),
-              onPressed: (){
-                poem.delete('file');
-              },
-            ),
-          ],
+    return WillPopScope(
+      onWillPop: (){
+        print("Will popped");
+        Get.off(Home());
+        return Future(()=>false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Settings"),
+          leading: IconButton(
+            icon: Icon(Icons.cancel),
+            onPressed: (){
+              Get.off(Home());
+            },
+          ),
+        ),
+        body: Container(
+          child: Column(
+            children: [
+              FlatButton(
+                child: Text("RESET"),
+                onPressed: (){
+                  poem.delete('file');
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

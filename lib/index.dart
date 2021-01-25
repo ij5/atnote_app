@@ -8,6 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 
+
 class Index extends StatefulWidget {
   @override
   IndexState createState() => IndexState();
@@ -108,6 +109,13 @@ class IndexState extends State<Index> {
                     ],
                   ),
                 ),
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  color: Colors.red,
+                  padding: EdgeInsets.all(20),
+                  child: Icon(Icons.delete, color: Colors.white,),
+                ),
+                direction: DismissDirection.endToStart,
               );
             },
           );

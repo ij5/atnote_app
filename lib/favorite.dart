@@ -98,6 +98,13 @@ class _FavoriteState extends State<Favorite> {
                     ],
                   ),
                 ),
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  color: Colors.red,
+                  padding: EdgeInsets.all(20),
+                  child: Icon(Icons.delete, color: Colors.white,),
+                ),
+                direction: DismissDirection.endToStart,
               );
             },
           );

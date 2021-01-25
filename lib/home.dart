@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:atnote/trash.dart';
 import 'package:atnote/settings.dart';
+import 'package:get/get.dart';
 
 class Home extends StatefulWidget{
   @override
@@ -49,17 +50,13 @@ class _HomeState extends State<Home> {
           IconButton(
             icon: Icon(Icons.delete_outline),
             onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Trash())).then((value){
-                setState(() {
-                  _currentPage = Index();
-                });
-              });
+              Get.off(Trash());
             },
           ),
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Settings()));
+              Get.off(Settings());
             },
           ),
         ],

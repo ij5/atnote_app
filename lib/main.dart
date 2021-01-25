@@ -5,6 +5,7 @@ import 'package:screen/screen.dart';
 import 'db.dart';
 import 'home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:get/get.dart';
 
 void main() async{
   await Hive.initFlutter();
@@ -16,7 +17,7 @@ void main() async{
 class App extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: "@note",
       home: Home(),
     );
