@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
         tooltip: "NEW",
         backgroundColor: Colors.black,
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>Editor())).then((value){
+          Get.to(Editor()).then((value){
             setState(() {
               _currentPage = Index();
             });
