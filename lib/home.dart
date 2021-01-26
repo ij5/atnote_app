@@ -8,9 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:atnote/trash.dart';
 import 'package:atnote/settings.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:local_auth/local_auth.dart';
-
 
 void makeAlert(context, title, content, button) {
   showDialog(
@@ -52,69 +51,17 @@ class _HomeState extends State<Home> {
   ];
   Widget _currentPage;
 
-
-  bool _isAuthenticated = false;
-  LocalAuthentication _localAuth;
-
   @override
   void initState(){
     super.initState();
     currentIndex = 0;
     _currentPage = Index();
-    this._localAuth = LocalAuthentication();
-    _auth();
   }
 
-  Future<bool> _auth()async{
-    setState(() {
-      this._isAuthenticated = false;
-    });
-    if(await this._localAuth.canCheckBiometrics==false){
-      makeAlert(context, "", "Your device is not support bioauth.", "OK");
-      setState(() {
-        this._isAuthenticated = true;
-      });
-      return true;
-    }
-
-    try{
-      final isAuthenticated = await this._localAuth.authenticateWithBiometrics(
-        localizedReason: "Please login to see notes."
-      );
-      setState(() {
-        this._isAuthenticated = true;
-      });
-      return isAuthenticated;
-    }catch(e){
-      makeAlert(context, "", "Failed to authenticate.\nreason: $e", "OK");
-      setState(() {
-        this._isAuthenticated = false;
-      });
-      return false;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return this._isAuthenticated?Scaffold(
-      body: Container(
-        child: Center(
-          child: Column(
-            children: [
-              Icon(Icons.fingerprint),
-              Text(
-                "Authenticate with your device's biometrics.",
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ):Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(
           "@note",

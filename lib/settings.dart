@@ -77,7 +77,7 @@ class _SettingsState extends State<Settings> {
               Row(
                 children: [
                   Text(
-                    "App Lock ",
+                    "App Lock(Preparing) ",
                   ),
                   Switch(
                     value: authPref,
@@ -89,7 +89,7 @@ class _SettingsState extends State<Settings> {
                       if(authPref){
                         setAuthPrefs(false);
                       }else{
-                        setAuthPrefs(true);
+                        setAuthPrefs(false); //TODO: change to true when implement biometrics authentication.
                       }
                     },
                   ),
