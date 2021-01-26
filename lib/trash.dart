@@ -72,6 +72,10 @@ class _TrashState extends State<Trash> {
                       onTap: (){
                         content[0]['trash'] = "false";
                         file.writeAsString(jsonEncode(content));
+                        setState(() {
+                          snapshot.data.get('file').removeAt(i);
+                        });
+                        Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("RESTORED.")));
                       },
                       child: Stack(
                         children: [
