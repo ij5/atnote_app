@@ -21,19 +21,28 @@ class _SettingsState extends State<Settings> {
 
   var authPref = false;
 
-  Future setAuthPrefs(auth)async{
+  Future setAuthPrefs(bool auth)async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getBool('auth')==null){
       prefs.setBool('auth', auth);
     }
-    prefs.setInt('auth', auth);
+    prefs.setBool('auth', auth);
+    return getAuthPrefs();
   }
   Future getAuthPrefs()async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getBool('auth')==null){
+      prefs.setBool('auth', false);
+    }
     setState(() {
       authPref = prefs.getBool('auth');
     });
     return authPref;
+  }
+
+  Future<SharedPreferences> removePrefs()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 
   @override
@@ -62,10 +71,14 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         body: Container(
-          child: SizedBox.expand(
-            child: Center(
-              child: Column(
+          margin: EdgeInsets.all(15),
+          child: Column(
+            children: [
+              Row(
                 children: [
+                  Text(
+                    "App Lock ",
+                  ),
                   Switch(
                     value: authPref,
                     activeColor: Colors.black,
@@ -74,27 +87,33 @@ class _SettingsState extends State<Settings> {
                     onChanged: (value){
                       getAuthPrefs();
                       if(authPref){
-                        setAuthPrefs(0);
+                        setAuthPrefs(false);
                       }else{
-                        setAuthPrefs(1);
+                        setAuthPrefs(true);
                       }
                     },
                   ),
-                  FlatButton(
-                    child: Text("RESET"),
-                    onPressed: (){
-                      poem.delete('file');
-                    },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.red),
-                    ),
-                    color: Colors.white,
-                    textColor: Colors.red,
-                  ),
                 ],
               ),
-            ),
+              Divider(
+                color: Colors.grey,
+                thickness: 1,
+                height: 20,
+              ),
+              FlatButton(
+                child: Text("RESET"),
+                onPressed: (){
+                  poem.delete('file');
+                  removePrefs();
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.red),
+                ),
+                color: Colors.white,
+                textColor: Colors.red,
+              ),
+            ],
           ),
         ),
       ),

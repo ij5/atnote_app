@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:atnote/trash.dart';
 import 'package:atnote/settings.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 
 class Home extends StatefulWidget{
   @override
@@ -27,11 +28,37 @@ class _HomeState extends State<Home> {
   ];
   Widget _currentPage;
 
+
+  bool _isAuthenticated = false;
+  LocalAuthentication _localAuth;
+
   @override
   void initState(){
     super.initState();
     currentIndex = 0;
     _currentPage = Index();
+    this._localAuth = LocalAuthentication();
+  }
+
+  Future<bool> _auth()async{
+    setState(() {
+      this._isAuthenticated = false;
+    });
+    if(await this._localAuth.canCheckBiometrics==false){
+      Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("Your device is not support bioauth. ")));
+      return true;
+    }
+
+    try{
+      final isAuthenticated = await this._localAuth.authenticateWithBiometrics(
+        localizedReason: "Please login to see notes."
+      );
+      Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("Successfully authenticated.")));
+      return isAuthenticated;
+    }catch(e){
+      Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("Failed to authenticate.")));
+      return false;
+    }
   }
 
   @override
