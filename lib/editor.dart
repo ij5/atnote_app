@@ -188,7 +188,7 @@ class _EditorState extends State<Editor> {
       print(input);
       input.insert(0, path);
       poems.put('file', input);
-      Get.off(View(), arguments: [c, file]);
+      Get.off(View(), arguments: [jsonEncode(c), file]);
     }else{
       final c = jsonDecode(contents);
       c.insert(0, {
