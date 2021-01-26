@@ -100,6 +100,7 @@ class _FavoriteState extends State<Favorite> {
                   ),
                 ),
                 background: Container(
+                  margin: EdgeInsets.fromLTRB(20, 15, 20, 15),
                   alignment: Alignment.centerRight,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
