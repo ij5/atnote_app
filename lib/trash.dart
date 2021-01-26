@@ -70,11 +70,10 @@ class _TrashState extends State<Trash> {
                     },
                     child: GestureDetector(
                       onTap: (){
-                        content[0]['trash'] = "false";
-                        file.writeAsString(jsonEncode(content));
                         setState(() {
-                          snapshot.data.get('file').removeAt(i);
+                          content[0]['trash'] = "false";
                         });
+                        file.writeAsString(jsonEncode(content), mode: FileMode.write);
                         Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("RESTORED.")));
                       },
                       child: Stack(

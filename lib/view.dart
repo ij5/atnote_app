@@ -89,11 +89,13 @@ class _ViewState extends State<View> {
             ),
           ],
         ),
-        body: Container(
-          padding: EdgeInsets.all(15),
-          child: ZefyrView(
-            document: document,
-            imageDelegate: CustomImageDelegate(),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(15),
+            child: ZefyrView(
+              document: document,
+              imageDelegate: CustomImageDelegate(),
+            ),
           ),
         ),
       ),
