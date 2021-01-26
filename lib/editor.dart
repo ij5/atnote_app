@@ -16,7 +16,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:math';
 
-void makeAlert(context, title, content, button, close) {
+void makeAlert(context, title, content, button) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -30,12 +30,7 @@ void makeAlert(context, title, content, button, close) {
           new FlatButton(
             child: Text(button),
             onPressed: () {
-              if (close) {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              } else {
-                Navigator.pop(context);
-              }
+              Navigator.pop(context);
             },
           ),
         ],

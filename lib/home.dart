@@ -11,6 +11,30 @@ import 'package:atnote/settings.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 
+
+void makeAlert(context, title, content, button) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        title: Text(title),
+        content: Text(content),
+        actions: <Widget>[
+          new FlatButton(
+            child: Text(button),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 class Home extends StatefulWidget{
   @override
   _HomeState createState() {
@@ -38,6 +62,7 @@ class _HomeState extends State<Home> {
     currentIndex = 0;
     _currentPage = Index();
     this._localAuth = LocalAuthentication();
+    _auth();
   }
 
   Future<bool> _auth()async{
@@ -45,7 +70,10 @@ class _HomeState extends State<Home> {
       this._isAuthenticated = false;
     });
     if(await this._localAuth.canCheckBiometrics==false){
-      Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("Your device is not support bioauth. ")));
+      makeAlert(context, "", "Your device is not support bioauth.", "OK");
+      setState(() {
+        this._isAuthenticated = true;
+      });
       return true;
     }
 
@@ -53,17 +81,40 @@ class _HomeState extends State<Home> {
       final isAuthenticated = await this._localAuth.authenticateWithBiometrics(
         localizedReason: "Please login to see notes."
       );
-      Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("Successfully authenticated.")));
+      setState(() {
+        this._isAuthenticated = true;
+      });
       return isAuthenticated;
     }catch(e){
-      Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("Failed to authenticate.")));
+      makeAlert(context, "", "Failed to authenticate.\nreason: $e", "OK");
+      setState(() {
+        this._isAuthenticated = false;
+      });
       return false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return this._isAuthenticated?Scaffold(
+      body: Container(
+        child: Center(
+          child: Column(
+            children: [
+              Icon(Icons.fingerprint),
+              Text(
+                "Authenticate with your device's biometrics.",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ):Scaffold(
       appBar: AppBar(
         title: Text(
           "@note",
