@@ -115,6 +115,12 @@ class _EditorState extends State<Editor> {
             color: Colors.black,
           ),
           actionsIconTheme: IconThemeData(color: Colors.black),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: (){
+              Get.off(Home());
+            }
+          ),
           actions: [
             IconButton(
               icon: Icon(
@@ -187,8 +193,8 @@ class _EditorState extends State<Editor> {
       final c = jsonDecode(contents);
       c.insert(0, {
         'title': c[0]['insert'].split('\n')[0],
-        'trash': jsonDecode(Get.arguments[0])[0]['trash'],
-        'heart': jsonDecode(Get.arguments[0])[0]['heart']
+        'trash': jsonDecode(Get.arguments[2])[0]['trash'],
+        'heart': jsonDecode(Get.arguments[2])[0]['heart']
       });
 
       Directory directory = await getApplicationDocumentsDirectory();
@@ -201,7 +207,7 @@ class _EditorState extends State<Editor> {
 
       file = Get.arguments[1];
       file.writeAsString(jsonEncode(c)).then((value) {
-        Get.off(View(), arguments: [c, file]);
+        Get.off(View(), arguments: [jsonEncode(c), file]);
       });
     }
   }

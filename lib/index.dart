@@ -111,8 +111,12 @@ class IndexState extends State<Index> {
                   ),
                 ),
                 background: Container(
+                  margin: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                    color: Colors.red,
+                  ),
                   alignment: Alignment.centerRight,
-                  color: Colors.red,
                   padding: EdgeInsets.all(20),
                   child: Icon(Icons.delete, color: Colors.white,),
                 ),

@@ -74,11 +74,17 @@ class _ViewState extends State<View> {
           title: Text(jsonDecode(Get.arguments[0])[0]['title']),
           iconTheme: IconThemeData(color: Colors.black),
           backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: (){
+              Get.off(Home());
+            },
+          ),
           actions: [
             IconButton(
               icon: Icon(Icons.edit),
               onPressed: (){
-                Get.off(Editor(), arguments: [document,  file]);
+                Get.off(Editor(), arguments: [document,  file, Get.arguments[0]]);
               },
             ),
           ],

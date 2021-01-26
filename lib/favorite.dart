@@ -101,7 +101,10 @@ class _FavoriteState extends State<Favorite> {
                 ),
                 background: Container(
                   alignment: Alignment.centerRight,
-                  color: Colors.red,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                    color: Colors.red,
+                  ),
                   padding: EdgeInsets.all(20),
                   child: Icon(Icons.delete, color: Colors.white,),
                 ),
