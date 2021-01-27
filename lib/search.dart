@@ -26,6 +26,7 @@ class _SearchState extends State<Search> {
     initPoem();
     final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Container(
+      margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
       child: FloatingSearchBar(
         hint: "Search...",
         scrollPadding: const EdgeInsets.only(top: 20, bottom: 50),
