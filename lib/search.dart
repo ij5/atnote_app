@@ -18,6 +18,7 @@ class Search extends StatelessWidget{
   Widget build(BuildContext context) {
     return Container(
 <<<<<<< HEAD
+<<<<<<< HEAD
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -125,6 +126,9 @@ class Search extends StatelessWidget{
           ),
         ],
       ),
+=======
+      child: Text("search"),
+>>>>>>> parent of 0a9c779... update
 =======
       child: Text("search"),
 >>>>>>> parent of 0a9c779... update

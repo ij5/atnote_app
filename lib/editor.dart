@@ -96,11 +96,7 @@ class _EditorState extends State<Editor> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: (){
-        if(Get.arguments==null){
-          Get.off(Home());
-        }else{
-          Get.off(View(), arguments: Get.arguments);
-        }
+        Get.off(Home());
         return Future(()=>false);
       },
       child: Scaffold(
@@ -117,11 +113,7 @@ class _EditorState extends State<Editor> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: (){
-              if(Get.arguments==null){
-                Get.off(Home());
-              }else{
-                Get.off(View(), arguments: [jsonEncode(c), file, Get.arguments[2]]);
-              }
+              Get.off(Home());
             }
           ),
           actions: [
@@ -210,7 +202,7 @@ class _EditorState extends State<Editor> {
 
       file = Get.arguments[1];
       file.writeAsString(jsonEncode(c)).then((value) {
-        Get.off(View(), arguments: [jsonEncode(c), file, Get.arguments[2]]);
+        Get.off(View(), arguments: [jsonEncode(c), file]);
       });
     }
   }
