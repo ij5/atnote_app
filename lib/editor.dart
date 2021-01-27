@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
-import 'package:atnote/home.dart';
-import 'package:atnote/index.dart';
-import 'package:atnote/view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +10,6 @@ import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
 import 'package:path/path.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:math';
 
 void makeAlert(context, title, content, button) {
@@ -183,7 +179,7 @@ class _EditorState extends State<Editor> {
       print(input);
       input.insert(0, path);
       poems.put('file', input);
-      Get.back(result: [jsonEncode(c), file]);
+      Get.back(result: [jsonEncode(c), file, jsonEncode(c), _controller.document]);
     }else{
       final c = jsonDecode(contents);
       c.insert(0, {
@@ -202,7 +198,7 @@ class _EditorState extends State<Editor> {
 
       file = Get.arguments[1];
       file.writeAsString(jsonEncode(c)).then((value) {
-        Get.back(result: [jsonEncode(c), file]);
+        Get.back(result: [Get.arguments[2], file, jsonEncode(c), _controller.document]);
       });
     }
   }

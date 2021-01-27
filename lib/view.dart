@@ -56,15 +56,22 @@ class View extends StatefulWidget{
 
 class _ViewState extends State<View> {
 
+  var document;
+  var file;
+  var content;
+
   @override
   void initState(){
     super.initState();
+    setState(() {
+      document = NotusDocument.fromDelta(getDelta(Get.arguments[0]));
+      file = Get.arguments[1];
+      content = Get.arguments[0];
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final document = NotusDocument.fromDelta(getDelta(Get.arguments[0]));
-    final file = Get.arguments[1];
     return WillPopScope(
       onWillPop: (){
         Get.back();
@@ -72,7 +79,7 @@ class _ViewState extends State<View> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(jsonDecode(Get.arguments[0])[0]['title']),
+          title: Text(content==null?"":jsonDecode(content)[0]['title']),
           iconTheme: IconThemeData(color: Colors.black),
           backgroundColor: Colors.white,
           leading: IconButton(
@@ -85,7 +92,15 @@ class _ViewState extends State<View> {
             IconButton(
               icon: Icon(Icons.edit),
               onPressed: (){
-                Get.to(Editor(), arguments: [document,  file, Get.arguments[0], Get.arguments[2]]);
+                Get.to(Editor(), arguments: [document,  file, content]).then((value){
+                  if(value.length!=0){
+                    setState(() {
+                      document = value[3];
+                      file = value[1];
+                      content = value[2];
+                    });
+                  }
+                });
               },
             ),
           ],
@@ -93,7 +108,7 @@ class _ViewState extends State<View> {
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(15),
-            child: ZefyrView(
+            child: document==null?CircularProgressIndicator():ZefyrView(
               document: document,
               imageDelegate: CustomImageDelegate(),
             ),
