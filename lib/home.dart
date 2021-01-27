@@ -105,7 +105,11 @@ class _HomeState extends State<Home> {
         tooltip: "NEW",
         backgroundColor: Colors.black,
         onPressed: (){
-          Get.to(Editor());
+          Get.to(Editor()).then((value){
+            setState(() {
+              _currentPage = Index();
+            });
+          });
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,

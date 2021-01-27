@@ -67,11 +67,7 @@ class _ViewState extends State<View> {
     final file = Get.arguments[1];
     return WillPopScope(
       onWillPop: (){
-        if(Get.arguments[2]==null){
-          Get.back(result: []);
-        }else if(Get.arguments[2]=="search"){
-          Get.back(result: ['search']);
-        }
+        Get.back();
         return Future(()=>false);
       },
       child: Scaffold(
@@ -82,11 +78,7 @@ class _ViewState extends State<View> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: (){
-              if(Get.arguments==null){
-                Get.back(result: []);
-              }else if(Get.arguments[2]=="search"){
-                Get.back(result:['search']);
-              }
+              Get.back();
             },
           ),
           actions: [

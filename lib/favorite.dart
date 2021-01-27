@@ -85,7 +85,7 @@ class _FavoriteState extends State<Favorite> {
                             setState(() {
                               content[0]['heart'] = "false";
                             });
-                            file.writeAsString(jsonEncode(content));
+                            file.writeAsStringSync(jsonEncode(content));
                           },
                         )
                             :InkWell(
@@ -94,7 +94,7 @@ class _FavoriteState extends State<Favorite> {
                             setState(() {
                               content[0]['heart'] = "true";
                             });
-                            file.writeAsString(jsonEncode(content));
+                            file.writeAsStringSync(jsonEncode(content));
                           },
                         ),
                         right: 30,
