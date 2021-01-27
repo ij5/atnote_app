@@ -92,7 +92,7 @@ class _ViewState extends State<View> {
             IconButton(
               icon: Icon(Icons.push_pin_outlined),
               onPressed: (){
-                
+
               },
             ),
             IconButton(
