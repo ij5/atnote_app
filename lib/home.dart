@@ -80,13 +80,17 @@ class _HomeState extends State<Home> {
           IconButton(
             icon: Icon(Icons.delete_outline),
             onPressed: (){
-              Get.off(Trash());
+              Get.to(Trash()).then((value){
+                setState(() {
+                  _currentPage = Index();
+                });
+              });
             },
           ),
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: (){
-              Get.off(Settings());
+              Get.to(Settings());
             },
           ),
         ],
@@ -101,7 +105,7 @@ class _HomeState extends State<Home> {
         tooltip: "NEW",
         backgroundColor: Colors.black,
         onPressed: (){
-          Get.off(Editor());
+          Get.to(Editor());
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,

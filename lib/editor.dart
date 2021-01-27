@@ -96,7 +96,7 @@ class _EditorState extends State<Editor> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: (){
-        Get.off(Home());
+        Get.back(result: []);
         return Future(()=>false);
       },
       child: Scaffold(
@@ -113,7 +113,7 @@ class _EditorState extends State<Editor> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: (){
-              Get.off(Home());
+              Get.back(result: []);
             }
           ),
           actions: [
@@ -183,7 +183,7 @@ class _EditorState extends State<Editor> {
       print(input);
       input.insert(0, path);
       poems.put('file', input);
-      Get.off(View(), arguments: [jsonEncode(c), file]);
+      Get.back(result: [jsonEncode(c), file]);
     }else{
       final c = jsonDecode(contents);
       c.insert(0, {
@@ -202,7 +202,7 @@ class _EditorState extends State<Editor> {
 
       file = Get.arguments[1];
       file.writeAsString(jsonEncode(c)).then((value) {
-        Get.off(View(), arguments: [jsonEncode(c), file]);
+        Get.back(result: [jsonEncode(c), file]);
       });
     }
   }

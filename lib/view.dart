@@ -68,9 +68,9 @@ class _ViewState extends State<View> {
     return WillPopScope(
       onWillPop: (){
         if(Get.arguments[2]==null){
-          Get.off(Home());
+          Get.back(result: []);
         }else if(Get.arguments[2]=="search"){
-          Get.off(Home(), arguments: ['search']);
+          Get.back(result: ['search']);
         }
         return Future(()=>false);
       },
@@ -83,9 +83,9 @@ class _ViewState extends State<View> {
             icon: Icon(Icons.arrow_back),
             onPressed: (){
               if(Get.arguments==null){
-                Get.off(Home());
+                Get.back(result: []);
               }else if(Get.arguments[2]=="search"){
-                Get.off(Home(), arguments:['search']);
+                Get.back(result:['search']);
               }
             },
           ),

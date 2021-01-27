@@ -26,7 +26,7 @@ class _TrashState extends State<Trash> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: (){
-        Get.off(Home());
+        Get.back();
         return Future(()=>false);
       },
       child: Scaffold(
@@ -37,7 +37,7 @@ class _TrashState extends State<Trash> {
           leading: IconButton(
             icon: Icon(Icons.cancel),
             onPressed: (){
-              Get.off(Home());
+              Get.back();
             },
           ),
         ),
