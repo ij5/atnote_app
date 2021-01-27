@@ -62,7 +62,11 @@ class IndexState extends State<Index> {
                 },
                 child: GestureDetector(
                   onTap: (){
-                    Get.to(View(), arguments: [jsonEncode(content), file, null]);
+                    Get.to(View(), arguments: [jsonEncode(content), file, null]).then((value){
+                      setState(() {
+                        content = value[0];
+                      });
+                    });
                   },
                   child: Stack(
                     children: [

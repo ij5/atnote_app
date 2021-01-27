@@ -74,7 +74,7 @@ class _ViewState extends State<View> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: (){
-        Get.back();
+        Get.back(result: [content, file]);
         return Future(()=>false);
       },
       child: Scaffold(
@@ -85,7 +85,7 @@ class _ViewState extends State<View> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: (){
-              Get.back();
+              Get.back(result: [content, file]);
             },
           ),
           actions: [
