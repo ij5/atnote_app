@@ -202,7 +202,7 @@ class _EditorState extends State<Editor> {
 
       file = Get.arguments[1];
       file.writeAsString(jsonEncode(c)).then((value) {
-        Get.off(View(), arguments: [jsonEncode(c), file]);
+        Get.off(View(), arguments: [jsonEncode(c), file, Get.arguments[2]]);
       });
     }
   }

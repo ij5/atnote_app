@@ -51,7 +51,7 @@ class _FavoriteState extends State<Favorite> {
                 },
                 child: GestureDetector(
                   onTap: (){
-                    Get.off(View(), arguments: [jsonEncode(content), file]);
+                    Get.off(View(), arguments: [jsonEncode(content), file, null]);
                   },
                   child: Stack(
                     children: [

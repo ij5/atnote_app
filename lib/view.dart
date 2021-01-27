@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:atnote/editor.dart';
 import 'package:atnote/home.dart';
+import 'package:atnote/search.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,11 @@ class _ViewState extends State<View> {
     final file = Get.arguments[1];
     return WillPopScope(
       onWillPop: (){
-        Get.off(Home());
+        if(Get.arguments[2]==null){
+          Get.off(Home());
+        }else if(Get.arguments[2]=="search"){
+          Get.back();
+        }
         return Future(()=>false);
       },
       child: Scaffold(
@@ -77,14 +82,18 @@ class _ViewState extends State<View> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: (){
-              Get.off(Home());
+              if(Get.arguments[2]==null){
+                Get.off(Home());
+              }else if(Get.arguments[2]=="search"){
+                Get.off(Home(), arguments:['search']);
+              }
             },
           ),
           actions: [
             IconButton(
               icon: Icon(Icons.edit),
               onPressed: (){
-                Get.off(Editor(), arguments: [document,  file, Get.arguments[0]]);
+                Get.to(Editor(), arguments: [document,  file, Get.arguments[0], Get.arguments[2]]);
               },
             ),
           ],

@@ -61,6 +61,11 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    if(Get.arguments!=null){
+      setState(() {
+        _currentPage = Search();
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(
