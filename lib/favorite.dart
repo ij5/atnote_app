@@ -53,7 +53,7 @@ class _FavoriteState extends State<Favorite> {
                   onTap: (){
                     Get.to(View(), arguments: [jsonEncode(content), file, null]).then((value){
                       setState(() {
-
+                        content = value[0];
                       });
                     });
                   },
