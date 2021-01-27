@@ -74,7 +74,7 @@ class _SearchState extends State<Search> {
                         }
                         return GestureDetector(
                           onTap: (){
-                            Get.to(View(), arguments: [jsonEncode(content), file, "search"]);
+                            Get.off(View(), arguments: [jsonEncode(content), file, "search"]);
                           },
                           child: Stack(
                             children: [

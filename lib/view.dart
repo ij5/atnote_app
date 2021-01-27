@@ -70,7 +70,7 @@ class _ViewState extends State<View> {
         if(Get.arguments[2]==null){
           Get.off(Home());
         }else if(Get.arguments[2]=="search"){
-          Get.back();
+          Get.off(Home(), arguments: ['search']);
         }
         return Future(()=>false);
       },
@@ -82,7 +82,7 @@ class _ViewState extends State<View> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: (){
-              if(Get.arguments[2]==null){
+              if(Get.arguments==null){
                 Get.off(Home());
               }else if(Get.arguments[2]=="search"){
                 Get.off(Home(), arguments:['search']);
