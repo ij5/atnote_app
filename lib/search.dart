@@ -1,29 +1,23 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:atnote/view.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
-class Search extends StatefulWidget{
-  @override
-  _SearchState createState() => _SearchState();
-}
-
-class _SearchState extends State<Search> {
+class Search extends StatelessWidget{
   var poems;
 
   initPoem()async{
     return await Hive.openBox('poems');
   }
 
+
+
   @override
   Widget build(BuildContext context) {
-    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Container(
+<<<<<<< HEAD
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -131,6 +125,10 @@ class _SearchState extends State<Search> {
           ),
         ],
       ),
+=======
+      child: Text("search"),
+>>>>>>> parent of 0a9c779... update
     );
   }
+
 }
