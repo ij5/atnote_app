@@ -61,11 +61,11 @@ class _TrashState extends State<Trash> {
                   }
                   return Dismissible(
                     key: UniqueKey(),
-                    onDismissed: (direction)async{
-                      await file.delete();
-                      await snapshot.data.get('file').removeAt(i);
-                      await initPoem();
-                      await poems.put('file', snapshot.data.get('file'));
+                    onDismissed: (direction){
+                      file.delete();
+                      snapshot.data.get('file').removeAt(i);
+                      initPoem();
+                      poems.put('file', snapshot.data.get('file'));
                       Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("DELETED.")));
                     },
                     child: GestureDetector(
