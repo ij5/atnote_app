@@ -54,7 +54,8 @@ class _TrashState extends State<Trash> {
                 padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                 itemCount: snapshot.data.get('file')==null?0:snapshot.data.get('file').length,
                 itemBuilder: (BuildContext context, int i){
-                  var file = File(snapshot.data.get('file')[i]);
+                  var poemsList = snapshot.data.get('file');
+                  var file = File(poemsList[i]);
                   var content = jsonDecode(file.readAsStringSync());
                   if(content[0]['trash']=="false"){
                     return SizedBox.shrink();
@@ -63,9 +64,9 @@ class _TrashState extends State<Trash> {
                     key: UniqueKey(),
                     onDismissed: (direction){
                       file.delete();
-                      snapshot.data.get('file').removeAt(i);
+                      poemsList.removeAt(i);
                       initPoem();
-                      poems.put('file', snapshot.data.get('file'));
+                      poems.put('file', poemsList);
                       Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("DELETED.")));
                     },
                     child: GestureDetector(
