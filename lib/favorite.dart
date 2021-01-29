@@ -45,8 +45,10 @@ class _FavoriteState extends State<Favorite> {
               return Dismissible(
                 key: UniqueKey(),
                 onDismissed: (direction){
-                  content[0]['trash'] = "true";
-                  file.writeAsString(jsonEncode(content));
+                  setState(() {
+                    content[0]['trash'] = "true";
+                  });
+                  file.writeAsStringSync(jsonEncode(content));
                   Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("Moved to trash.")));
                 },
                 child: GestureDetector(

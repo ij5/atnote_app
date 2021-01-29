@@ -40,6 +40,25 @@ class _TrashState extends State<Trash> {
               Get.back();
             },
           ),
+          // actions: [
+          //   IconButton(
+          //     icon: Icon(Icons.delete_forever),
+          //     onPressed: ()async{
+          //       final p = await initPoem();
+          //       final poemsList = p.get('file');
+          //       var content;
+          //       var file;
+          //       poemsList.forEach((poem){
+          //         file = File(poem);
+          //         content = jsonDecode(file.readAsStringSync());
+          //         if(content[0]['trash']=="false"){
+          //           return;
+          //         }
+          //
+          //       });
+          //     },
+          //   ),
+          // ],
         ),
         body: Container(
           child: FutureBuilder(
@@ -64,9 +83,11 @@ class _TrashState extends State<Trash> {
                     key: UniqueKey(),
                     onDismissed: (direction){
                       file.delete();
-                      poemsList.removeAt(i);
+                      setState(() {
+                        poemsList.removeAt(i);
+                      });
                       initPoem();
-                      poems.put('file', poemsList);
+                      snapshot.data.put('file', poemsList);
                       Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(SnackBar(content: Text("DELETED.")));
                     },
                     child: GestureDetector(
@@ -101,8 +122,12 @@ class _TrashState extends State<Trash> {
                       ),
                     ),
                     background: Container(
+                      margin: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                        color: Colors.red,
+                      ),
                       alignment: Alignment.centerRight,
-                      color: Colors.red,
                       padding: EdgeInsets.all(20),
                       child: Icon(Icons.delete, color: Colors.white,),
                     ),

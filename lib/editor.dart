@@ -169,7 +169,7 @@ class _EditorState extends State<Editor> {
       File file;
 
       file = File(path);
-      file.writeAsString(jsonEncode(c));
+      file.writeAsStringSync(jsonEncode(c));
 
       var poems = await Hive.openBox('poems');
       if(poems.get('file')==null){
