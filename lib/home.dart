@@ -78,6 +78,7 @@ class _HomeState extends State<Home> {
               Get.to(Trash()).then((value){
                 setState(() {
                   _currentPage = Index();
+                  currentIndex = 0;
                 });
               });
             },
@@ -103,6 +104,7 @@ class _HomeState extends State<Home> {
           Get.to(Editor()).then((value){
             setState(() {
               _currentPage = Index();
+              currentIndex = 0;
             });
           });
         },

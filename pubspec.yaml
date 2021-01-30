@@ -37,7 +37,7 @@ dependencies:
   path: ^1.7.0
   path_provider: ^1.6.27
   provider: ^4.3.3
-  flutter_local_notifications: ^3.0.3
+  flutter_local_notifications: ^4.0.0
   get: ^3.24.0
   local_auth: ^0.6.3+4
   shared_preferences: ^0.5.12+4

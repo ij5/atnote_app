@@ -1,16 +1,14 @@
 import 'dart:convert';
 import 'package:atnote/editor.dart';
-import 'package:atnote/home.dart';
-import 'package:atnote/search.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
-import 'package:atnote/poem.dart';
 import 'package:zefyr/zefyr.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:atnote/main.dart';
 
 
 class CustomImageDelegate implements ZefyrImageDelegate<ImageSource> {
@@ -59,6 +57,8 @@ class _ViewState extends State<View> {
   var document;
   var file;
   var content;
+
+  var _flutterLocalNotificationsPlugin;
 
   @override
   void initState(){

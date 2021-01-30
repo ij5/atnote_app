@@ -29,10 +29,10 @@ class _SearchState extends State<Search> {
       margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
       child: FloatingSearchBar(
         hint: "Search...",
-        scrollPadding: const EdgeInsets.only(top: 20, bottom: 50),
+        scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
         transitionDuration: const Duration(milliseconds: 800),
         transitionCurve: Curves.easeInOut,
-        physics: const BouncingScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         axisAlignment: isPortrait?0.0:-1.0,
         openAxisAlignment: 0.0,
         maxWidth: isPortrait?600:500,
@@ -42,7 +42,7 @@ class _SearchState extends State<Search> {
             this._query = query;
           });
         },
-        transition: CircularFloatingSearchBarTransition(),
+        transition: SlideFadeFloatingSearchBarTransition(),
         actions: [
           FloatingSearchBarAction.searchToClear(
             showIfClosed: false,
