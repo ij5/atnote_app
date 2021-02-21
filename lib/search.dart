@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:atnote/view.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 
 class Search extends StatefulWidget{
   @override
@@ -23,29 +22,14 @@ class _SearchState extends State<Search> {
     return poems;
   }
 
-  BannerAd _bannerAd;
-
-  BannerAd _createBannerAd(){
-    return BannerAd(
-      adUnitId: BannerAd.testAdUnitId,
-      size: AdSize.banner,
-      listener: (MobileAdEvent event){
-        print("BannerAdEvent $event");
-      }
-    );
-  }
-
   @override
   void initState(){
     super.initState();
-    FirebaseAdMob.instance.initialize(appId: FirebaseAdMob.testAppId);
-    _bannerAd = _createBannerAd()..load()..show();
 
   }
 
   @override
   void dispose(){
-    _bannerAd.dispose();
     super.dispose();
   }
 
