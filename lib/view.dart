@@ -89,12 +89,12 @@ class _ViewState extends State<View> {
             },
           ),
           actions: [
-            IconButton(
-              icon: Icon(Icons.push_pin_outlined),
-              onPressed: (){
-
-              },
-            ),
+            // IconButton(
+            //   icon: Icon(Icons.push_pin_outlined),
+            //   onPressed: (){
+            //
+            //   },
+            // ),
             IconButton(
               icon: Icon(Icons.edit),
               onPressed: (){

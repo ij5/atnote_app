@@ -83,12 +83,12 @@ class _HomeState extends State<Home> {
               });
             },
           ),
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: (){
-              Get.to(Settings());
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.settings),
+          //   onPressed: (){
+          //     Get.to(Settings());
+          //   },
+          // ),
         ],
       ),
       body: Container(
