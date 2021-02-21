@@ -12,7 +12,7 @@ void main() async{
   await Hive.initFlutter();
   await Hive.openBox('poems');
   runApp(App());
-  Screen.keepOn(true);
+  // Screen.keepOn(true);
 }
 
 void _initNotificationSettings()async{
